@@ -43,34 +43,34 @@ output: pleasantness, tension, energy (0-1 in .1 increments)
 
 
 const stats = moodNetwork.train([
-  { input: { sleep: 0.66, sun: 0.75, exercise: 1, social: 0.66, relax: 1, meals: 0.75, work: 0.4}, output: { pleasant: .7, tension: .5, energy: .7}},
-  { input: { sleep: 0.33, sun: 0.5, exercise: 0, social: 1, relax: 0.33, meals: .5, work: 1}, output: {pleasant: .6, tension: .6, energy: .5}},
-  { input: { sleep: 0.66, sun: 0.75, exercise: 0, social: 0.66, relax: 0.66, meals: .75, work: 0.8}, output: {pleasant: .8, tension: .4, energy: .7}},
-  { input: { sleep: 0.66, sun: 1, exercise: 1, social: 0.33, relax: 0.66, meals: .25, work: 0.6}, output: { pleasant: .8, tension: .3, energy: .4}},
+  { input: { sleep: 0.66, sun: 0.75, exercise: 1, social: 0.66, relax: 1, meals: 0.75, work: 0.4}, output: { pleasant: .9, tension: .5, energy: .9}},
+  { input: { sleep: 0.33, sun: 0.5, exercise: 0, social: 1, relax: 0.33, meals: .5, work: 1}, output: {pleasant: .8, tension: .8, energy: .5}},
+  { input: { sleep: 0.66, sun: 0.75, exercise: 0, social: 0.66, relax: 0.66, meals: .75, work: 0.8}, output: {pleasant: .8, tension: .2, energy: .9}},
+  { input: { sleep: 0.66, sun: 1, exercise: 1, social: 0.33, relax: 0.66, meals: .25, work: 0.6}, output: { pleasant: .8, tension: .1, energy: .2}},
 
   { input: { sleep: 1, sun: 0.25, exercise: 1, social: 0, relax: 0.33, meals: .75, work: 0.2}, output: { pleasant: .5, tension: .7, energy: .6 }},
-  { input: { sleep: 1, sun: 0.75, exercise: 0, social: 0.33, relax: 0.66, meals: .5, work: 0.2}, output: { pleasant: .5, tension: .5, energy: .7}},
+  { input: { sleep: 1, sun: 0.75, exercise: 0, social: 0.33, relax: 0.66, meals: .5, work: 0.2}, output: { pleasant: .5, tension: .5, energy: .9}},
   { input: { sleep: 0.66, sun: 0.25, exercise: 1, social: 0.66, relax: 0, meals: .25, work: 0.4}, output: { pleasant: .2, tension: .8, energy: .3}},
-  { input: { sleep: 0.33, sun: 0.5, exercise: 0, social: 0.33, relax: 1, meals: .75, work: 0.6}, output: { pleasant: .4, tension: .6, energy: .2}},
+  { input: { sleep: 0.33, sun: 0.5, exercise: 0, social: 0.33, relax: 1, meals: .75, work: 0.6}, output: { pleasant: .4, tension: .8, energy: .2}},
 
-  { input: { sleep: 0.33, sun: 0.25, exercise: 1, social: 1, relax: 0, meals: .5, work: 0.6}, output: { pleasant: .6, tension: .4, energy: .4}},
-  { input: { sleep: 0.66, sun: 0, exercise: 0, social: 0.66, relax: 0.33, meals: .25, work: 0.8}, output: { pleasant: .3, tension: .7, energy: .4}},
-  { input: { sleep: 1, sun: 0.75, exercise: 0, social: 0.33, relax: 0.33, meals: .5, work: 0.2}, output: { pleasant: .6, tension: .9, energy: .7}},
-  { input: { sleep: 0.66, sun: 0.5, exercise: 0, social: 0.33, relax: 0, meals: .5, work: 0.4}, output: { pleasant: .1, tension: .9, energy: .4}},
+  { input: { sleep: 0.33, sun: 0.25, exercise: 1, social: 1, relax: 0, meals: .5, work: 0.6}, output: { pleasant: .8, tension: .2, energy: .2}},
+  { input: { sleep: 0.66, sun: 0, exercise: 0, social: 0.66, relax: 0.33, meals: .25, work: 0.8}, output: { pleasant: .3, tension: .7, energy: .2}},
+  { input: { sleep: 1, sun: 0.75, exercise: 0, social: 0.33, relax: 0.33, meals: .5, work: 0.2}, output: { pleasant: .8, tension: .9, energy: .9}},
+  { input: { sleep: 0.66, sun: 0.5, exercise: 0, social: 0.33, relax: 0, meals: .5, work: 0.4}, output: { pleasant: .1, tension: .9, energy: .2}},
 
-  { input: { sleep: 0.33, sun: 1, exercise: 1, social: 1, relax: 0, meals: .5, work: 1}, output: { pleasant: .8, tension: .3, energy: .5 }},
-  { input: { sleep: 0.66, sun: 1, exercise: 1, social: 0.66, relax: 0.66, meals: .5, work: 0.6}, output: { pleasant: .5, tension: .4, energy: .8}},
+  { input: { sleep: 0.33, sun: 1, exercise: 1, social: 1, relax: 0, meals: .5, work: 1}, output: { pleasant: .8, tension: .1, energy: .2 }},
+  { input: { sleep: 0.66, sun: 1, exercise: 1, social: 0.66, relax: 0.66, meals: .5, work: 0.6}, output: { pleasant: .5, tension: .2, energy: .8}},
   { input: { sleep: 1, sun: 0.75, exercise: 1, social: 0.33, relax: 0.66, meals: .75, work: 0.8}, output: { pleasant: .8, tension: .2, energy: 1 }},
-  { input: { sleep: 0.66, sun: 0.75, exercise: 0, social: 1, relax: 1, meals: .75, work: 0.6}, output: { pleasant: .8, energy: .7, tension: .4 }},
+  { input: { sleep: 0.66, sun: 0.75, exercise: 0, social: 1, relax: 1, meals: .75, work: 0.6}, output: { pleasant: .8, energy: .9, tension: .2 }},
   
-  { input: { sleep: 0.66, sun: 0.5, exercise: 1, social: 0.33, relax: 1, meals: .5, work: 0.6}, output: { pleasant: .5, tension: .3, energy: .7}},
-  { input: { sleep: 1, sun: 0.75, exercise: 1, social: 0.66, relax: 0.33, meals: .75, work: 0.4}, output: { pleasant: .6, tension: .5, energy: .5}},
-  { input: { sleep: 0.33, sun: 1, exercise: 0, social: 0, relax: 0.66, meals: .75, work: 0.6}, output: { pleasant: .7, tension: .6, energy: .4 }},
+  { input: { sleep: 0.66, sun: 0.5, exercise: 1, social: 0.33, relax: 1, meals: .5, work: 0.6}, output: { pleasant: .6, tension: .1, energy: .9}},
+  { input: { sleep: 1, sun: 0.75, exercise: 1, social: 0.66, relax: 0.33, meals: .75, work: 0.4}, output: { pleasant: .8, tension: .5, energy: .6}},
+  { input: { sleep: 0.33, sun: 1, exercise: 0, social: 0, relax: 0.66, meals: .75, work: 0.6}, output: { pleasant: .9, tension: .8, energy: .2 }},
   { input: { sleep: 0.66, sun: 0, exercise: 1, social: 0.66, relax: 1, meals: .5, work: 0.8}, output: { pleasant: .5, tension: .1, energy: .3}},
 
   { input: { sleep: .66, sun: 0.75, exercise: 1, social: 1, relax: 1, meals: .75, work: 1}, output: { pleasant: 1, tension: 0, energy: .5}},
   { input: { sleep: 0, sun: 0, exercise: 0, social: 0, relax: 0, meals: .25, work: 0}, output: { pleasant: 0, tension: 1, energy: 0}},
-  { input: { sleep: 0.66, sun: 0.5, exercise: 0, social: 1, relax: 0.33, meals: .25, work: 0.2}, output: { pleasant: 0, tension: .3, energy: .5 }},
+  { input: { sleep: 0.66, sun: 0.5, exercise: 0, social: 1, relax: 0.33, meals: .25, work: 0.2}, output: { pleasant: 0, tension: .1, energy: .5 }},
   { input: { sleep: 0.66, sun: 1, exercise: 0, social: 1, relax: 0, meals: .75, work: .4}, output: { pleasant: 1, tension: 1, energy: 1}}
 
 
