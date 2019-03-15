@@ -1,5 +1,5 @@
 const brain = require('brain.js')
-const moodNetwork = new brain.NeuralNetwork({hiddenLayers: [5, 3], activation: 'sigmoid', learningRate: .6})
+const moodNetwork = new brain.NeuralNetwork({hiddenLayers: [6, 4], activation: 'sigmoid'})
 
 /*input: 
     sleep: brackets:
@@ -101,4 +101,4 @@ console.log("Result4: \n", r4)
 console.log("Result5: \n", r5)
 console.log("Result6: \n", r6)
 
-console.log(moodNetwork.toJSON())
+//console.log(moodNetwork.toJSON())
