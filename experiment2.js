@@ -1,5 +1,6 @@
 const brain = require('brain.js')
 const moodNetwork = new brain.NeuralNetwork({hiddenLayers: [6, 4], activation: 'sigmoid'})
+const fs = require('fs')
 
 /*input: 
     sleep: brackets:
@@ -41,42 +42,103 @@ const moodNetwork = new brain.NeuralNetwork({hiddenLayers: [6, 4], activation: '
 output: pleasantness, tension, energy (0-1 in .1 increments)
 */
 
-
-const stats = moodNetwork.train([
-  { input: { sleep: 0.66, sun: 0.75, exercise: 1, social: 0.66, relax: 1, meals: 0.75, work: 0.4}, output: { pleasant: .7, tension: .5, energy: .7}},
-  { input: { sleep: 0.33, sun: 0.5, exercise: 0, social: 1, relax: 0.33, meals: .5, work: 1}, output: {pleasant: .6, tension: .6, energy: .5}},
-  { input: { sleep: 0.66, sun: 0.75, exercise: 0, social: 0.66, relax: 0.66, meals: .75, work: 0.8}, output: {pleasant: .8, tension: .4, energy: .7}},
-  { input: { sleep: 0.66, sun: 1, exercise: 1, social: 0.33, relax: 0.66, meals: .25, work: 0.6}, output: { pleasant: .8, tension: .3, energy: .4}},
-
-  { input: { sleep: 1, sun: 0.25, exercise: 1, social: 0, relax: 0.33, meals: .75, work: 0.2}, output: { pleasant: .5, tension: .7, energy: .6 }},
-  { input: { sleep: 1, sun: 0.75, exercise: 0, social: 0.33, relax: 0.66, meals: .5, work: 0.2}, output: { pleasant: .5, tension: .5, energy: .7}},
-  { input: { sleep: 0.66, sun: 0.25, exercise: 1, social: 0.66, relax: 0, meals: .25, work: 0.4}, output: { pleasant: .2, tension: .8, energy: .3}},
-  { input: { sleep: 0.33, sun: 0.5, exercise: 0, social: 0.33, relax: 1, meals: .75, work: 0.6}, output: { pleasant: .4, tension: .6, energy: .2}},
-
-  { input: { sleep: 0.33, sun: 0.25, exercise: 1, social: 1, relax: 0, meals: .5, work: 0.6}, output: { pleasant: .6, tension: .4, energy: .4}},
-  { input: { sleep: 0.66, sun: 0, exercise: 0, social: 0.66, relax: 0.33, meals: .25, work: 0.8}, output: { pleasant: .3, tension: .7, energy: .4}},
-  { input: { sleep: 1, sun: 0.75, exercise: 0, social: 0.33, relax: 0.33, meals: .5, work: 0.2}, output: { pleasant: .6, tension: .9, energy: .7}},
-  { input: { sleep: 0.66, sun: 0.5, exercise: 0, social: 0.33, relax: 0, meals: .5, work: 0.4}, output: { pleasant: .1, tension: .9, energy: .4}},
-
-  { input: { sleep: 0.33, sun: 1, exercise: 1, social: 1, relax: 0, meals: .5, work: 1}, output: { pleasant: .8, tension: .3, energy: .5 }},
-  { input: { sleep: 0.66, sun: 1, exercise: 1, social: 0.66, relax: 0.66, meals: .5, work: 0.6}, output: { pleasant: .5, tension: .4, energy: .8}},
-  { input: { sleep: 1, sun: 0.75, exercise: 1, social: 0.33, relax: 0.66, meals: .75, work: 0.8}, output: { pleasant: .8, tension: .2, energy: 1 }},
-  { input: { sleep: 0.66, sun: 0.75, exercise: 0, social: 1, relax: 1, meals: .75, work: 0.6}, output: { pleasant: .8, energy: .7, tension: .4 }},
+const binaryData = [
+    {input: { sleep: 1, sun: 1, exercise: 1, social: 1, relax: 1, meals: 1, work: 1}, output: { pleasant: 1, energy: 1}},
+    { input: { sleep: 0, sun: 0, exercise: 0, social: 1, relax: 1, meals: 1, work: 1}, output: {pleasant: 1, energy: 0}},
+    { input: { sleep: 0, sun: 0, exercise: 0, social: 0, relax: 0, meals: 0, work: 0}, output: {pleasant: 0, energy: 0}},
+    { input: { sleep: 1, sun: 1, exercise: 1, social: 0, relax: 0, meals: 0, work: 0}, output: { pleasant: 0, energy: 1}}
   
-  { input: { sleep: 0.66, sun: 0.5, exercise: 1, social: 0.33, relax: 1, meals: .5, work: 0.6}, output: { pleasant: .5, tension: .3, energy: .7}},
-  { input: { sleep: 1, sun: 0.75, exercise: 1, social: 0.66, relax: 0.33, meals: .75, work: 0.4}, output: { pleasant: .6, tension: .5, energy: .5}},
-  { input: { sleep: 0.33, sun: 1, exercise: 0, social: 0, relax: 0.66, meals: .75, work: 0.6}, output: { pleasant: .7, tension: .6, energy: .4 }},
-  { input: { sleep: 0.66, sun: 0, exercise: 1, social: 0.66, relax: 1, meals: .5, work: 0.8}, output: { pleasant: .5, tension: .1, energy: .3}},
-
-  { input: { sleep: .66, sun: 0.75, exercise: 1, social: 1, relax: 1, meals: .75, work: 1}, output: { pleasant: 1, tension: 0, energy: .5}},
-  { input: { sleep: 0, sun: 0, exercise: 0, social: 0, relax: 0, meals: .25, work: 0}, output: { pleasant: 0, tension: 1, energy: 0}},
-  { input: { sleep: 0.66, sun: 0.5, exercise: 0, social: 1, relax: 0.33, meals: .25, work: 0.2}, output: { pleasant: 0, tension: .3, energy: .5 }},
-  { input: { sleep: 0.66, sun: 1, exercise: 0, social: 1, relax: 0, meals: .75, work: .4}, output: { pleasant: 1, tension: 1, energy: 1}}
+]
 
 
-])
+const originalData = [
+    { input: { sleep: 0.66, sun: 0.75, exercise: 1, social: 0.66, relax: 1, meals: 0.75, work: 0.4}, output: { pleasant: .7, tension: .5, energy: .7}},
+    { input: { sleep: 0.33, sun: 0.5, exercise: 0, social: 1, relax: 0.33, meals: .5, work: 1}, output: {pleasant: .6, tension: .6, energy: .5}},
+    { input: { sleep: 0.66, sun: 0.75, exercise: 0, social: 0.66, relax: 0.66, meals: .75, work: 0.8}, output: {pleasant: .8, tension: .4, energy: .7}},
+    { input: { sleep: 0.66, sun: 1, exercise: 1, social: 0.33, relax: 0.66, meals: .25, work: 0.6}, output: { pleasant: .8, tension: .3, energy: .4}},
+  
+    { input: { sleep: 1, sun: 0.25, exercise: 1, social: 0, relax: 0.33, meals: .75, work: 0.2}, output: { pleasant: .5, tension: .7, energy: .6 }},
+    { input: { sleep: 1, sun: 0.75, exercise: 0, social: 0.33, relax: 0.66, meals: .5, work: 0.2}, output: { pleasant: .5, tension: .5, energy: .7}},
+    { input: { sleep: 0.66, sun: 0.25, exercise: 1, social: 0.66, relax: 0, meals: .25, work: 0.4}, output: { pleasant: .2, tension: .8, energy: .3}},
+    { input: { sleep: 0.33, sun: 0.5, exercise: 0, social: 0.33, relax: 1, meals: .75, work: 0.6}, output: { pleasant: .4, tension: .6, energy: .2}},
+  
+    { input: { sleep: 0.33, sun: 0.25, exercise: 1, social: 1, relax: 0, meals: .5, work: 0.6}, output: { pleasant: .6, tension: .4, energy: .4}},
+    { input: { sleep: 0.66, sun: 0, exercise: 0, social: 0.66, relax: 0.33, meals: .25, work: 0.8}, output: { pleasant: .3, tension: .7, energy: .4}},
+    { input: { sleep: 1, sun: 0.75, exercise: 0, social: 0.33, relax: 0.33, meals: .5, work: 0.2}, output: { pleasant: .6, tension: .9, energy: .7}},
+    { input: { sleep: 0.66, sun: 0.5, exercise: 0, social: 0.33, relax: 0, meals: .5, work: 0.4}, output: { pleasant: .1, tension: .9, energy: .4}},
+  
+    { input: { sleep: 0.33, sun: 1, exercise: 1, social: 1, relax: 0, meals: .5, work: 1}, output: { pleasant: .8, tension: .3, energy: .5 }},
+    { input: { sleep: 0.66, sun: 1, exercise: 1, social: 0.66, relax: 0.66, meals: .5, work: 0.6}, output: { pleasant: .5, tension: .4, energy: .8}},
+    { input: { sleep: 1, sun: 0.75, exercise: 1, social: 0.33, relax: 0.66, meals: .75, work: 0.8}, output: { pleasant: .8, tension: .2, energy: 1 }},
+    { input: { sleep: 0.66, sun: 0.75, exercise: 0, social: 1, relax: 1, meals: .75, work: 0.6}, output: { pleasant: .8, energy: .7, tension: .4 }},
+    
+    { input: { sleep: 0.66, sun: 0.5, exercise: 1, social: 0.33, relax: 1, meals: .5, work: 0.6}, output: { pleasant: .5, tension: .3, energy: .7}},
+    { input: { sleep: 1, sun: 0.75, exercise: 1, social: 0.66, relax: 0.33, meals: .75, work: 0.4}, output: { pleasant: .6, tension: .5, energy: .5}},
+    { input: { sleep: 0.33, sun: 1, exercise: 0, social: 0, relax: 0.66, meals: .75, work: 0.6}, output: { pleasant: .7, tension: .6, energy: .4 }},
+    { input: { sleep: 0.66, sun: 0, exercise: 1, social: 0.66, relax: 1, meals: .5, work: 0.8}, output: { pleasant: .5, tension: .1, energy: .3}},
+  
+    { input: { sleep: .66, sun: 0.75, exercise: 1, social: 1, relax: 1, meals: .75, work: 1}, output: { pleasant: 1, tension: 0, energy: .5}},
+    { input: { sleep: 0, sun: 0, exercise: 0, social: 0, relax: 0, meals: .25, work: 0}, output: { pleasant: 0, tension: 1, energy: 0}},
+    { input: { sleep: 0.66, sun: 0.5, exercise: 0, social: 1, relax: 0.33, meals: .25, work: 0.2}, output: { pleasant: 0, tension: .3, energy: .5 }},
+    { input: { sleep: 0.66, sun: 1, exercise: 0, social: 1, relax: 0, meals: .75, work: .4}, output: { pleasant: 1, tension: 1, energy: 1}}
+  ]
+function getRF(min, max) {  //random float
+    return Math.random() * (max - min) + min;
+}
+
+function highEnergyData(){
+    const result = []
+    while (result.length < 5000){
+        let newData = {input: {}, output: {}}
+        newData.input.sleep = getRF(0.6, 1)
+        newData.input.sun = getRF(0.6, 1)
+        newData.input.exercise = getRF(0.6, 1)
+        newData.input.social = getRF(0, 1)
+        newData.input.relax = getRF(0, 1)
+        newData.input.meals = getRF(0, 1)
+        newData.input.work = getRF(0, 1)
+
+        newData.output.energy = 1
+        //getRF((newData.input.sleep + newData.input.sun + newData.input.exercise) / 3, 1)
+        newData.output.pleasant = getRF(0, 1)
+        //getRF((newData.input.relax + newData.input.meals + newData.input.work) / 3, 1)
+        //newData.output.tension //take out?
+        result.push(newData)
+    }
+    return result
+}
+
+function highPleasantData(){
+    const result = []
+    while (result.length < 5000){
+        let newData = {input: {}, output: {}}
+        newData.input.sleep = getRF(0, 1)
+        newData.input.sun = getRF(0, 1)
+        newData.input.exercise = getRF(0, 1)
+        newData.input.social = getRF(0, 1)
+        newData.input.relax = getRF(0.6, 1)
+        newData.input.meals = getRF(0.6, 1)
+        newData.input.work = getRF(0.6, 1)
+
+        newData.output.energy = getRF(0, 1)
+        //getRF((newData.input.sleep + newData.input.sun + newData.input.exercise) / 3, 1)
+        newData.output.pleasant = 1
+        //getRF((newData.input.relax + newData.input.meals + newData.input.work) / 3, 1)
+        //newData.output.tension //take out?
+        result.push(newData)
+    }
+    return result
+}
+
+// const pData = highPleasantData()
+// const eData = highEnergyData()
+
+// const comboData = pData.concat(eData)
+
+const stats = moodNetwork.train(originalData)
 
 console.log("Stats: ", stats)
+fs.writeFileSync('NN.txt', (JSON.stringify(moodNetwork.toJSON())))
 
 const guessMore = [
   {sleep: 0, sun: 0.75, exercise: 0, social: 1, relax: 1, meals: .5, work: 0.4}, //pleasant: 0-.4, tension: .4-.7, energy: 0-.4
@@ -125,12 +187,6 @@ function orderResults(resultObj){
     });
     return order
 }
-// const r1 = moodNetwork.run(guessMore[0])
-// const r2 = moodNetwork.run(guessMore[1])
-// const r3 = moodNetwork.run(guessMore[2])
-// const r4 = moodNetwork.run(guessMore[3])
-// const r5 = moodNetwork.run(guessMore[4])
-// const r6 = moodNetwork.run(guessMore[5])
 
 const r1 = avgOfRuns(guessMore[0], moodNetwork, 100)
 const r2 = avgOfRuns(guessMore[1], moodNetwork, 100)
